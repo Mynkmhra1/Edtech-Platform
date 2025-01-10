@@ -153,13 +153,14 @@ exports.login=async(req,res)=>{
     if(await bcrypt.compare(password,user.password)){
         const payload={
             email:user.email,
-            password:user.password
+            id:user._id,
+            accountType:user.accountType
         }
         const token=jwt.sign(payload,JWT_SECRET,{expiresIn:"2h"})
         user.token=token;
         user.password=undefined;
         
-        //create cookie
+        //create cookies
         res.cookie("token",token,{expires:Date.now()+ (3*24*60*60*1000)}).json({
             success:true,
             message:"cookie generated successfully"
@@ -209,28 +210,21 @@ exports.changepassword=async(req,res)=>{
         }) 
     }
 
+        // Step 3: Validate the new password (Example: minimum length 8)
+        if (newpassword.length < 8) {
+            return res.status(400).json({ message: 'New password must be at least 8 characters long' });
+          }
+      
+
     
     //bcrypt the password
     const hashedpass= await bcrypt.hash(newpassword,10)
-    //create the entry in databsase
-    // but before that u have to make profile data to update in additional details
-    const prof=await profile.create({
-        gender:null,
-        dateOfBirth:null,
-        about:null,
-        contactNumber:null
-    })
-    //now create the entry in database
-    const entry=await User.create({
-        firstName,
-        lastName,
-        email,
-        contactNumber,
-        password:hashedpass,
-        accountType,
-        additionalDetails:prof._id,
-        image
-    })
+    
+    //now update and change the entry in database
+    user.password=hashedpass;
+    await user.save();
+    
+    //response
     res.status(200).json({
         success:true,
         message:"successfully changed the data"

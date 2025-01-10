@@ -1,0 +1,101 @@
+require("dotenv").config()
+const jwt=require("jsonwebtoken")
+const tokenverify=async (req,res,next)=>{
+    try{
+        //fetch token
+        const token = req.cookies.token||req.body.token;
+        //verify token is missing or not
+
+        if(!token){
+            return res.status(400).json({
+                success:false,
+                message:"token not found during verification"
+            })
+        }
+        try{
+        //verify the token
+        const decode= jwt.verify(token ,process.env.JWT_SECRET)
+        req.user=decode;
+        
+        
+        }catch(err){
+            return res.status(403).json({
+                success:true,
+                message:"token verifification failed!!"
+            })
+        }
+        next();
+
+    }catch(err){
+        return res.status(400).json({
+            success:false,
+            message:"failed while validating token"
+        })
+
+    }
+}
+
+
+
+const isStudent=async (req,res,next)=>{
+    try{
+        //fetch role
+        if(req.user.accountType!=="Student"){
+            return res.status(403).json({
+                success:false,
+                message:"this is protected route for student"
+            })
+        }
+        
+    next();
+
+    }catch(err){
+        return res.status(400).json({
+            success:false,
+            message:"failed while verifying student"
+        })
+
+    }
+}
+
+const isAdmin=async (req,res,next)=>{
+    try{
+        //fetch role
+        if(req.user.accountType!=="Admin"){
+            return res.status(403).json({
+                success:false,
+                message:"this is protected route for Admin"
+            })
+        }
+        
+    next();
+
+    }catch(err){
+        return res.status(400).json({
+            success:false,
+            message:"failed while verifying admin"
+        })
+
+    }
+}
+
+const isInstructor=async (req,res,next)=>{
+    try{
+        //fetch role
+        if(req.user.accountType!=="Instructor"){
+            return res.status(403).json({
+                success:false,
+                message:"this is protected route for Instructor"
+            })
+        }
+        
+    next();
+
+    }catch(err){
+        return res.status(400).json({
+            success:false,
+            message:"failed while verifying Instructor"
+        })
+
+    }
+}
