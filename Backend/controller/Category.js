@@ -1,5 +1,5 @@
-const Tags=require("../models/Tags")
-exports.createtag=async (req,res)=>{
+const Category=require("../models/Category")
+exports.createCategory=async (req,res)=>{
     try{
         const{name ,Description}=req.body;
         //validate
@@ -11,7 +11,7 @@ exports.createtag=async (req,res)=>{
         }
         //create entry
 
-        const tagdata=await Tags.create({
+        const Categorydata=await Category.create({
             name:name,
             Description:Description
         })
@@ -30,12 +30,12 @@ exports.createtag=async (req,res)=>{
 }
 
 
-//get all tags 
+//get all Category 
 
 
-exports.showalltags=async(req,res)=>{
+exports.showallCategory=async(req,res)=>{
     try{
-        const alltags=await Tags.find({},{name:true,Description:true});
+        const allCategory=await Category.find({},{name:true,Description:true});
         return res.status(200).json({
             success:true,
             message:"successfully returned all tags"

@@ -1,5 +1,5 @@
 const Course=require("../models/Course")
-const Tags=require("../models/Tags")
+const Category=require("../models/Category")
 const uploadimage=require("../config/Image_uploader")
 const User=require("../models/User")
 require("dotenv").config()
@@ -9,11 +9,11 @@ require("dotenv").config()
 exports.createcourse=async(req,res)=>{
     try{
         //data fetch
-    const{courseName,courseDescription,WhatYouWillLearn,price,tag}=req.body;
+    const{courseName,courseDescription,WhatYouWillLearn,price,Category}=req.body;
     //file fetch
     const thumbnail=req.files.thumbnailImage;
     //validation
-    if(!courseName||!courseDescription||!WhatYouWillLearn||!price||!Tag){
+    if(!courseName||!courseDescription||!WhatYouWillLearn||!price||!Category){
         return res.status(400).json({
             success:false,
             message:"all details required"
@@ -33,9 +33,9 @@ exports.createcourse=async(req,res)=>{
         })
     }
 
-    //tags validation
-    const tagdetails=await Tags.findById(tag);
-    if(!tagdetails){
+    //Category validation
+    const Categorydetails=await Category.findById(Category);
+    if(!Categorydetails){
         return res.status(400).json({
             success:false,
             message:"no details found for tag"
@@ -50,7 +50,7 @@ exports.createcourse=async(req,res)=>{
         courseDescription:courseDescription,
         WhatYouWillLearn:WhatYouWillLearn,
         price,
-        tag:tag,
+        Category:Category,
         thumbnail:upload.secure_url
     })
     //add course entry in user
@@ -59,8 +59,8 @@ exports.createcourse=async(req,res)=>{
         $push:{courses:newcourse._id}
     },{new:true})
 
-    //update tag schema
-    await Tags.findByIdAndUpdate({_id:tagdetails._id},
+    //update Category schema
+    await Category.findByIdAndUpdate({_id:Categorydetails._id},
         {
         $push:{Course:newcourse._id}
     },{new:true})
