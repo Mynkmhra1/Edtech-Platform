@@ -2,6 +2,7 @@ const Course=require("../models/Course")
 const Category=require("../models/Category")
 const uploadimage=require("../config/Image_uploader")
 const User=require("../models/User")
+const subSection = require("../models/subSection")
 require("dotenv").config()
 
 //create courses
@@ -100,6 +101,56 @@ exports.getallcourses=async(req,res)=>{
         return res.status(500).json({
             success:false,
             message:err.message
+        })
+    }
+}
+
+//get course details
+
+exports.getcoursedetails=async(req,res)=>{
+    try{
+        //fetch courseid
+    const courseid=req.body;
+    //populate details
+    const coursedetails=await Course.findById(courseid)
+    .populate(
+        {
+            path:"Instructor",
+            populate:{
+            path:("additionalDetails")
+            }
+        }
+    )
+    .populate(
+        {
+            path:"section",
+            populate:{
+                path:("subSection"),
+            }
+        }
+    )
+    .populate("category")
+    .populate("RatingAndReviews")
+    .exec()
+
+
+    //validation
+    if(!coursedetails){
+        return res.status(400).json({
+            success:false,
+            message:"no course details found"
+        })
+    }
+
+    //response
+    return res.status(200).json({
+        success:true,
+        message:"successfully details found"
+    })
+    }catch(err){
+        return res.status(400).json({
+            success:false,
+            message:"cant populate the details"
         })
     }
 }

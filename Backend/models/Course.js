@@ -29,6 +29,9 @@ const Courses= new mongoose.Schema({
     thumbnail:{
         type:String
     },
+    Tags:{
+        type:String
+    },
     Category:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Category"
