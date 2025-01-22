@@ -2,7 +2,7 @@ const mailSender = require("../utils/mailsender");
 const User =require("../models/User")
 
 //resetpasswordtoken
-const resetPasswordToken=async(req,res)=>{
+exports.resetPasswordToken=async(req,res)=>{
     try{
         //fetch mail
     const {email}=req.body;
@@ -42,7 +42,7 @@ const resetPasswordToken=async(req,res)=>{
 
 //resetpassword
 
-const resetpassword=async(req,res)=>{
+exports.resetpassword=async(req,res)=>{
     try{
         //fetch data 
     const{newpassword,confirmpassword,token}=req.body

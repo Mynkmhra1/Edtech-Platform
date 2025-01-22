@@ -1,5 +1,5 @@
 //otp generate
-const otp=require("../models/otp");
+const Otp=require("../models/otp");
 const profile = require("../models/profile");
 const User = require("../models/User")
 const otpGenerator= require("otp-generator")
@@ -19,12 +19,13 @@ require("dotenv").config()
             });
         }
         //generate otp
-        var otpgen=otpGenerator.generate(6,{
+        var otpgen= otpGenerator.generate(6,{
             lowerCaseAlphabets:false,
             upperCaseAlphabets:false,
             specialChars:false
         })
-        const otpexist=await otp.findOne({otp: otpgen})
+        console.log(`otp created ${otpgen}`)
+        const otpexist=await Otp.findOne({otp: otpgen})
 
         while(otpexist){
             otpgen=otpGenerator.generate(6,{
@@ -32,13 +33,13 @@ require("dotenv").config()
                 upperCaseAlphabets:false,
                 specialChars:false
             })
-            otpexist=await otp.findOne({otp: otpgen})
+            otpexist=await Otp.findOne({otp: otpgen})
         }
     //creating payload
 
-        const otppayload={email,otpgen};
+        const otppayload={email,otp:otpgen};
     //  sending otp email
-        const senddata=await otp.create(otppayload);
+        const senddata=await Otp.create(otppayload);
         console.log(senddata);
             res.status(200).json({
             success:true,
@@ -81,7 +82,7 @@ exports.signup=async(req,res)=>{
         });
     }
     //else validate otp
-    const recentOtp= await otp.findOne({email}).sort({createdAt:-1});
+    const recentOtp= await Otp.findOne({email}).sort({createdAt:-1});
     if(recentOtp.lenght===0){
         return res.status(400).json({
             success:false,

@@ -100,3 +100,4 @@ const isInstructor=async (req,res,next)=>{
 
     }
 }
+module.exports = { tokenverify, isStudent, isAdmin, isInstructor };

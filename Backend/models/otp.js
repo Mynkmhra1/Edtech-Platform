@@ -27,8 +27,22 @@ async function sendverificationmail(otp,email){
     }
 }
 
-otp.pre("save",async function(next){
-    await sendverificationmail(this.otp,this.email);
+otpSchema.pre("save", async function (next) {
+    try {
+        if (this.otp && this.email) {
+            console.log("Attempting to send verification email for:", this.email);
+            await sendverificationmail(this.otp, this.email);
+            console.log("Verification email sent successfully:", this.otp, this.email);
+        } else {
+            console.error("Missing OTP or email in pre-save hook");
+        }
+    } catch (err) {
+        console.error("Error sending verification email:", err.message);
+        // Pass the error to Mongoose if it's critical to handle
+        return next(err);
+    }
+    // Always call next to proceed
     next();
-})
+});
+
 module.exports=mongoose.model("Otp",otpSchema);

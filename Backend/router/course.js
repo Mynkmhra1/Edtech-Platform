@@ -28,23 +28,24 @@ const{tokenverify,isStudent,isAdmin,isInstructor}=require("../middleware/Auth");
 //-------------------------------------------------------------------------------------------------------------------
 
 //course creation by instructor only
-router.post("/createCourse",tokenverify,isInstructor,createcourse)
+
+router.post('/createCourse',tokenverify,isInstructor,createcourse)
 
 //adding section
-router.post("/addSection",auth ,isInstructor,createsection)
+router.post("/addSection",tokenverify ,isInstructor,createsection)
 
 //update a section
-router.post("/updateSection",auth ,isInstructor,updateSection)
+router.post("/updateSection",tokenverify ,isInstructor,updateSection)
 
 //delete a section
-router.post("/deleteSection",auth ,isInstructor,deletesection)
+router.post("/deleteSection",tokenverify ,isInstructor,deletesection)
 
 // Edit Sub Section
-router.post("/updateSubSection", auth, isInstructor, updatesubSection)
+router.post("/updateSubSection", tokenverify, isInstructor, updatesubSection)
 // Delete Sub Section
-router.post("/deleteSubSection", auth, isInstructor, deleteSubsection)
+router.post("/deleteSubSection", tokenverify, isInstructor, deleteSubsection)
 // Add a Sub Section to a Section
-router.post("/addSubSection", auth, isInstructor, createsubsection)
+router.post("/addSubSection", tokenverify, isInstructor, createsubsection)
 // Get all Registered Courses
 router.get("/getAllCourses", getallcourses)
 // Get Details for a Specific Courses
@@ -57,7 +58,7 @@ router.post("/getCourseDetails", getcoursedetails)
 
 //Category can Only be Created by Admin
 
-router.post("/createCategory", auth, isAdmin, createCategory)
+router.post("/createCategory", tokenverify, isAdmin, createCategory)
 router.get("/showAllCategories", showallCategory)
 router.post("/getCategoryPageDetails", categoryPageDetails)
 
@@ -65,7 +66,7 @@ router.post("/getCategoryPageDetails", categoryPageDetails)
                                             //rating route by student only
 //-------------------------------------------------------------------------------------------------------------------
 
-router.post("/createRating", auth, isStudent, createRating)
+router.post("/createRating", tokenverify, isStudent, createRating)
 router.get("/getAverageRating", getaveragerating)
 router.get("/getReviews", getallratingsandreviews)
 

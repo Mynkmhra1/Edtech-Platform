@@ -1,5 +1,5 @@
 const mongoose= require("mongoose");
-const Section = require("./subSection");
+const subSection = require("./subSection");
 
 const Section= new mongoose.Schema({
     sectionName:{

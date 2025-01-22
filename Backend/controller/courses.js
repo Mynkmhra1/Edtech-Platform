@@ -14,11 +14,17 @@ exports.createcourse=async(req,res)=>{
     //file fetch
     const thumbnail=req.files.thumbnailImage;
     //validation
-    if(!courseName||!courseDescription||!WhatYouWillLearn||!price||!Category){
+    if(!courseName||!courseDescription||!WhatYouWillLearn||!price||!Categoryid){
         return res.status(400).json({
             success:false,
             message:"all details required"
         })
+    }
+    if (!req.files || !req.files.thumbnailImage) {
+        return res.status(400).json({
+            success: false,
+            message: "Thumbnail image is required",
+        });
     }
 
     //instructor validation
@@ -51,7 +57,7 @@ exports.createcourse=async(req,res)=>{
         courseDescription:courseDescription,
         WhatYouWillLearn:WhatYouWillLearn,
         price,
-        Category:Category,
+        Category:Categoryid,
         thumbnail:upload.secure_url
     })
     //add course entry in user
@@ -80,8 +86,6 @@ return res.status(200).json({
     
 }
 
-
-
 //fetch all courses
 
 exports.getallcourses=async(req,res)=>{
@@ -92,7 +96,7 @@ exports.getallcourses=async(req,res)=>{
             Instructor:true,
             RatingAndReviews:true
         }).populate("Instructor").exec();
-        return res.status(500).json({
+        return res.status(200).json({
             success:true,
             message:"successfully executed to show all courses"
         })
@@ -110,7 +114,14 @@ exports.getallcourses=async(req,res)=>{
 exports.getcoursedetails=async(req,res)=>{
     try{
         //fetch courseid
-    const courseid=req.body;
+    const {courseid}=req.body;
+
+    if (!courseid) {
+        return res.status(400).json({
+            success: false,
+            message: "Course ID is required",
+        });
+    }
     //populate details
     const coursedetails=await Course.findById(courseid)
     .populate(
