@@ -2,11 +2,11 @@ const {instance}= require("../config/razorpay")
 const User=require("../models/User")
 const Course=require("../models/Course")
 const courseEnrollmentEmail=require("../mail/template/courseEnrollmentEmail")
-const mailSender=require("../config/mailsender")
+const mailSender=require("../utils/mailsender")
 const { default: mongoose } = require("mongoose")
 
 
-exports.capturePayments=async(req,res)=>{
+exports.capturePayment=async(req,res)=>{
     try{
         //fetch courseid and userid
         const{courseid}=req.body

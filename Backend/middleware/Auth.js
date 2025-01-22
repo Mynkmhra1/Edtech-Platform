@@ -1,5 +1,6 @@
-require("dotenv").config()
 const jwt=require("jsonwebtoken")
+require("dotenv").config()
+
 const tokenverify=async (req,res,next)=>{
     try{
         //fetch token

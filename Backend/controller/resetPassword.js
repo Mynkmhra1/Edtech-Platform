@@ -1,4 +1,4 @@
-const mailSender = require("../config/mailsender");
+const mailSender = require("../utils/mailsender");
 const User =require("../models/User")
 
 //resetpasswordtoken

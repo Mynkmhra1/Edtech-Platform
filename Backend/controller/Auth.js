@@ -7,7 +7,7 @@ const bcrypt= require("bcrypt")
 const jwt=require("jsonwebtoken")
 require("dotenv").config()
 
- exports.generateotp=async(req,res)=>{
+ exports.sendotp=async(req,res)=>{
     try{
         const{email}=req.body;
         const isexist=await User.findOne({email});
@@ -37,12 +37,12 @@ require("dotenv").config()
     //creating payload
 
         const otppayload={email,otpgen};
-    // sending payload to db
+    //  sending otp email
         const senddata=await otp.create(otppayload);
         console.log(senddata);
             res.status(200).json({
             success:true,
-            message:"otp updated on db successfully!"
+            message:"otp sent successfully!"
     })
     }catch(err){
         return res.status(400).json({
@@ -52,11 +52,6 @@ require("dotenv").config()
         })
     }
 }
-
-
-
-
-
 
 //signup
 exports.signup=async(req,res)=>{

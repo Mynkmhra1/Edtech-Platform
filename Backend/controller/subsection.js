@@ -1,4 +1,4 @@
-const { imageupload } = require("../config/Image_uploader");
+const { imageupload } = require("../utils/Image_uploader");
 const section=require("../models/section")
 const subsection=require("../models/subSection")
 require("dotenv").config()

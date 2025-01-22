@@ -1,6 +1,6 @@
 const Course=require("../models/Course")
 const Category=require("../models/Category")
-const uploadimage=require("../config/Image_uploader")
+const uploadimage=require("../utils/Image_uploader")
 const User=require("../models/User")
 const subSection = require("../models/subSection")
 require("dotenv").config()
@@ -10,7 +10,7 @@ require("dotenv").config()
 exports.createcourse=async(req,res)=>{
     try{
         //data fetch
-    const{courseName,courseDescription,WhatYouWillLearn,price,Category}=req.body;
+    const{courseName,courseDescription,WhatYouWillLearn,price,Categoryid}=req.body;
     //file fetch
     const thumbnail=req.files.thumbnailImage;
     //validation
@@ -35,7 +35,7 @@ exports.createcourse=async(req,res)=>{
     }
 
     //Category validation
-    const Categorydetails=await Category.findById(Category);
+    const Categorydetails=await Category.findById(Categoryid);
     if(!Categorydetails){
         return res.status(400).json({
             success:false,
