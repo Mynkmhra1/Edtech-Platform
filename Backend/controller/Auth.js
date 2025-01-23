@@ -9,15 +9,18 @@ require("dotenv").config()
 
  exports.sendotp=async(req,res)=>{
     try{
+
+        console.log("hii started")
         const{email}=req.body;
         const isexist=await User.findOne({email});
+        console.log(isexist)
         if(isexist){
             return res.status(400).json({
                 success:false,
                 message:"email already exists ",
-                error:err
             });
         }
+        console.log("checked isexist")
         //generate otp
         var otpgen= otpGenerator.generate(6,{
             lowerCaseAlphabets:false,
@@ -49,7 +52,7 @@ require("dotenv").config()
         return res.status(400).json({
             success:false,
             message:"OTP cant get updated in db !",
-            error:err
+            error:err.message
         })
     }
 }
@@ -82,14 +85,25 @@ exports.signup=async(req,res)=>{
         });
     }
     //else validate otp
-    const recentOtp= await Otp.findOne({email}).sort({createdAt:-1});
-    if(recentOtp.lenght===0){
+    const recentOtp= await Otp.findOne({email}).sort({CreatedAt:-1});
+    
+    //validation
+
+    if (!recentOtp) {
+        return res.status(400).json({
+            success: false,
+            message: "No OTP found for this email",
+        });
+    }
+
+    console.log(`recent otp is ${recentOtp.otp}`)
+    if(recentOtp.otp.length===0){
         return res.status(400).json({
             success:false,
             message:"didnt find otp in db "
         })
     }
-    else if(recentOtp!==otp){
+    else if(recentOtp.otp!==otp){
         return res.status(400).json({
             success:false,
             message:"otp did not match "
@@ -107,8 +121,8 @@ exports.signup=async(req,res)=>{
     })
     //now create the entry
     const entry=await User.create({
-        firstName,
-        lastName,
+        Firstname:firstName,
+        Lastname:lastName,
         email,
         contactNumber,
         password:hashedpass,
@@ -124,7 +138,7 @@ exports.signup=async(req,res)=>{
         return res.status(400).json({
             success:false,
             message:"cant sign up please try again ",
-            error:err
+            error:err.message
         })
     }
 }
@@ -135,6 +149,7 @@ exports.login=async(req,res)=>{
     try{
         //fetch data from body
     const{email,password}=req.body;
+    console.log(`email=> ${email}, password=>${password}`)
     //validate the data for not empty
     if(!email||!password){
         return res.status(400).json({
@@ -145,22 +160,36 @@ exports.login=async(req,res)=>{
     
     //fetch password from db
     const user=await User.findOne({email}) 
+    console.log(`USER details=> ${user}`)
     //compare the password
     if(await bcrypt.compare(password,user.password)){
+        console.log(`inside password match statement`)
         const payload={
             email:user.email,
             id:user._id,
             accountType:user.accountType
         }
-        const token=jwt.sign(payload,JWT_SECRET,{expiresIn:"2h"})
+        console.log(`payload =`,payload)
+        const token=jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:"2h"})
+        console.log(`token=> ${token}`)
         user.token=token;
         user.password=undefined;
         
         //create cookies
-        res.cookie("token",token,{expires:Date.now()+ (3*24*60*60*1000)}).json({
-            success:true,
-            message:"cookie generated successfully"
-        })
+        res.cookie("token", token, {
+            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+        }).status(200).json({
+            success: true,
+            message: "Login successful and cookie generated",
+            data: {
+                user: {
+                    email: user.email,
+                    id: user._id,
+                    accountType: user.accountType,
+                },
+            },
+        });
     }
     else{
         return res.status(400).json({

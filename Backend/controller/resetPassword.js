@@ -1,5 +1,6 @@
 const mailSender = require("../utils/mailsender");
 const User =require("../models/User")
+const bcrypt=require("bcrypt")
 
 //resetpasswordtoken
 exports.resetPasswordToken=async(req,res)=>{
@@ -70,10 +71,13 @@ exports.resetpassword=async(req,res)=>{
             message:"passwords are not same"
         })
     }
+    console.log("password validated")
     //bcrypt the password
     const hashedpass=await bcrypt.hash(newpassword,10)
+    console.log("password hashed")
     //update the password in db
     await User.findOneAndUpdate({token:token},{password:hashedpass},{new:true})
+    console.log("password updated")
     return res.status(200).json({
         success:true,
         message:"password changed successfully"

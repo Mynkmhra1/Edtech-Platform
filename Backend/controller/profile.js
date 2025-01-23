@@ -26,7 +26,7 @@ exports.updateProfile=async(req,res)=>{
         profiledetails.gender=gender
         await profiledetails.save()
         //response
-        return res.status(400).json({
+        return res.status(200).json({
             success:true,
             message:"successfully updated profile"
         })
@@ -34,7 +34,8 @@ exports.updateProfile=async(req,res)=>{
      }catch(err){
         return res.status(400).json({
             success:false,
-            message:"cant update profile ,try again later"
+            message:"cant update profile ,try again later",
+            error: err.message,
         })
      }
 }
@@ -43,10 +44,13 @@ exports.updateProfile=async(req,res)=>{
 
 exports.deleteAccount=async(req,res)=>{
     try{
+      console.log("successfully entered",req.user)
         //fetch user id
     const userid=req.user.id;
+    console.log("successfully entered", userid)
     //fetch user details
     const userdetails=await user.findById(userid);
+    console.log("successfully details are ",userdetails)
     //validate
     if(!userdetails){
         return res.status(400).json({
@@ -55,19 +59,20 @@ exports.deleteAccount=async(req,res)=>{
         })
     }
     //delete  profile
-    const deleteprofile=profile.findByIdAndDelete(userdetails.additionalDetails) ;
+    const deleteprofile=await profile.findByIdAndDelete(userdetails.additionalDetails) ;
     //delete account user
-    const deleteuser=user.findByIdAndDelete(userid)
+    const deleteuser=await user.findByIdAndDelete(userid)
 
     //response
-    return res.status(400).json({
+    return res.status(200).json({
         success:true,
         message:"successfully deleted account"
     })
     }catch(err){
         return res.status(400).json({
             success:false,
-            message:"can't delete account ,try again later"
+            message:"can't delete account ,try again later",
+            error:err.message
         })
     }
 
@@ -99,8 +104,11 @@ exports.getAllUserDetails = async (req, res) => {
 
 exports.updateDisplayPicture = async (req, res) => {
     try {
+      console.log("Hii there")
       const displayPicture = req.files.displayPicture
       const userId = req.user.id
+      console.log("userid is ",userId)
+      console.log("userid is ",req.user)
       const image = await imageupload(
         displayPicture,
         process.env.FOLDER_NAME,
