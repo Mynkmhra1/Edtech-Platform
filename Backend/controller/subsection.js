@@ -10,7 +10,7 @@ exports.createsubsection=async(req,res)=>{
     const {sectionid,title,description,timeDuration}=req.body;
 
     //fetch file
-    const video=req.files.videofile
+    const video=req.files.videoFile
     //validation
     if(!sectionid||!title||!description||!timeDuration){
         return res.status(400).json({
@@ -41,7 +41,8 @@ exports.createsubsection=async(req,res)=>{
     }catch(err){
         return res.status(400).json({
             success:false,
-            message:"can't add subsection ,try again"
+            message:"can't add subsection ,try again",
+            error:err.message
         }) 
     }
 }
@@ -89,9 +90,27 @@ exports.updatesubSection=async(req,res)=>{
 exports.deleteSubsection=async(req,res)=>{
     try{
         //getid- assuming that id is getting from params
-        const {subSectionid}=req.params;
+        const {subSectionid,sectionid}=req.body;
+        //validate
+        if (!subSectionid || !sectionid) {
+            return res.status(400).json({
+                success: false,
+                message: "SubSection ID and Section ID are required",
+            });
+        }
         //delete
-        await subsection.findByIdAndDelete(subSectionid)
+        const deletedSubsection = await subsection.findByIdAndDelete(subSectionid);
+        if (!deletedSubsection) {
+            return res.status(404).json({
+                success: false,
+                message: "SubSection not found",
+            });
+        }
+            console.log("data deleted")
+        //delete from section
+        await section.findByIdAndUpdate(sectionid,{
+            $pull: { subSection: subSectionid }
+        },{new:true})
         //response
         return res.status(200).json({
             success:true,

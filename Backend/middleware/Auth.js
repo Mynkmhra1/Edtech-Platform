@@ -21,8 +21,9 @@ const tokenverify=async (req,res,next)=>{
         
         }catch(err){
             return res.status(403).json({
-                success:true,
-                message:"token verifification failed!!"
+                success:false,
+                message:"token verifification failed!!",
+                error:err.message
             })
         }
         next();
@@ -30,7 +31,8 @@ const tokenverify=async (req,res,next)=>{
     }catch(err){
         return res.status(400).json({
             success:false,
-            message:"failed while validating token"
+            message:"failed while validating token",
+            error:err.message
         })
 
     }

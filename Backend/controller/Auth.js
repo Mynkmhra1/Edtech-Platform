@@ -85,8 +85,9 @@ exports.signup=async(req,res)=>{
         });
     }
     //else validate otp
+    console.log(`recent otp is`)
     const recentOtp= await Otp.findOne({email}).sort({CreatedAt:-1});
-    
+    console.log(`recent otp is ${recentOtp.otp}`)
     //validation
 
     if (!recentOtp) {

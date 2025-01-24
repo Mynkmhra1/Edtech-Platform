@@ -5,7 +5,7 @@ const router=express.Router();
 
 //Importing course controller
 
-const {createcourse,getallcourses,getcoursedetails}=require("../controller/courses");
+const {createcourse,getallcourses,getcoursedetails,deletecourse}=require("../controller/courses");
 
 //Importing section controller
 
@@ -31,19 +31,22 @@ const{tokenverify,isStudent,isAdmin,isInstructor}=require("../middleware/Auth");
 
 router.post('/createCourse',tokenverify,isInstructor,createcourse)
 
+//delete course
+router.delete("/deleteCourse/",tokenverify ,isInstructor,deletecourse)
+
 //adding section
 router.post("/addSection",tokenverify ,isInstructor,createsection)
 
 //update a section
-router.post("/updateSection",tokenverify ,isInstructor,updateSection)
+router.put("/updateSection",tokenverify ,isInstructor,updateSection)
 
 //delete a section
-router.post("/deleteSection",tokenverify ,isInstructor,deletesection)
+router.delete("/deleteSection/:sectionid",tokenverify ,isInstructor,deletesection)
 
 // Edit Sub Section
-router.post("/updateSubSection", tokenverify, isInstructor, updatesubSection)
+router.put("/updateSubSection", tokenverify, isInstructor, updatesubSection)
 // Delete Sub Section
-router.post("/deleteSubSection", tokenverify, isInstructor, deleteSubsection)
+router.delete("/deleteSubSection", tokenverify, isInstructor, deleteSubsection)
 // Add a Sub Section to a Section
 router.post("/addSubSection", tokenverify, isInstructor, createsubsection)
 // Get all Registered Courses

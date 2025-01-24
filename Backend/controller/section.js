@@ -2,10 +2,12 @@ const Section =require("../models/section")
 const course=require("../models/Course");
 
 
+
 exports.createsection= async(req,res)=>{
    try{
         //fetch data
         const {sectionName,courseId}=req.body;
+        console.log("sectionname and course id", sectionName,courseId)
         //validation
         if(!sectionName||!courseId){
             return res.status(400).json({
@@ -13,30 +15,41 @@ exports.createsection= async(req,res)=>{
                 message:"enter all fields"
             })
         }
+        console.log("validation complete")
         //create section
         const sectiondata= await Section.create({sectionName})
+        console.log("created section",sectiondata)
      
-        //update course
-        const updatecourse=await course.findOne(courseId,{
-            $push:{
-                courseContent:sectiondata._id
-            }
-        }).populate({
+        // Update course
+        const updatecourse = await course.findOneAndUpdate(
+            { _id: courseId }, // Use _id to query the course
+            {
+                $push: {
+                    courseContent: sectiondata._id, // Push the new section ID to courseContent
+                },
+            },
+            { new: true } // Ensure the updated document is returned
+        ).populate({
             path: 'courseContent', // Populate sections in courseContent
             populate: {
-              path: 'subSections', // Nested population for subsections in sections
+                path: 'subSection', // Nested population for subsections in sections
             },
-          });
+        });
+
+        console.log("Updated course:", updatecourse);
+
         //response
        
         return res.status(200).json({
             success:true,
-            message:"successfully created sections and updated course"
+            message:"successfully created sections and updated course",
+            data:updatecourse
         })
    }catch(err){
         return res.status(400).json({
             success:false,
-            message:"can't update category on section ,try again"
+            message:"can't update category on section ,try again",
+            error:err.message
         }) 
    }
 
@@ -59,7 +72,8 @@ exports.updateSection=async(req,res)=>{
         //response
         return res.status(200).json({
             success:true,
-            message:"successfully updated sections and course"
+            message:"successfully updated sections and course",
+            data:newdata
         })
     }catch(err){
         return res.status(400).json({
@@ -75,8 +89,14 @@ exports.deletesection=async(req,res)=>{
     try{
         //getid- assuming that id is getting from params
         const {sectionid}=req.params;
+        const {courseId}=req.body
+        console.log("sectionid is ",req.params)
         //delete
         await Section.findByIdAndDelete(sectionid)
+        //delete from course
+        await course.findByIdAndUpdate(courseId,{
+            $pull: { courseContent: sectionid }
+        },{new:true})
         //response
         return res.status(200).json({
             success:true,
