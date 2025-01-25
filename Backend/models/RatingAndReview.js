@@ -14,7 +14,7 @@ const RatingAndReview= new mongoose.Schema({
     },
     course:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Course"
+        ref:"Courses"
     }
 })
 module.exports=mongoose.model("RatingAndReviews",RatingAndReview);

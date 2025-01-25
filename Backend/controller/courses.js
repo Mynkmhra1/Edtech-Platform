@@ -4,6 +4,7 @@ const uploadimage=require("../utils/Image_uploader")
 const User=require("../models/User")
 const Section=require("../models/section")
 const SubSection = require("../models/subSection")
+const mongoose=require("mongoose")
 require("dotenv").config()
 
 //create courses
@@ -11,7 +12,7 @@ require("dotenv").config()
 exports.createcourse=async(req,res)=>{
     try{
         //data fetch
-    const{courseName,courseDescription,WhatYouWillLearn,price,Categoryid,tags}=req.body;
+    let{courseName,courseDescription,WhatYouWillLearn,price,status,Categoryid,tags}=req.body;
     //file fetch
     console.log("instructor details ",req.user.id);
 
@@ -23,6 +24,12 @@ exports.createcourse=async(req,res)=>{
             message:"all details required"
         })
     }
+
+    if (!status || status === undefined) {
+        status = "Draft";
+    }
+
+
     if (!req.files || !req.files.thumbnailImage) {
         return res.status(400).json({
             success: false,
@@ -64,7 +71,8 @@ exports.createcourse=async(req,res)=>{
         price,
         Instructor:req.user.id,
         Tags:tags,
-        Category:Categoryid,
+        Category:new mongoose.Types.ObjectId(Categoryid),
+        status:status,
         thumbnail:upload.secure_url
     })
     console.log("course created");
@@ -84,7 +92,8 @@ exports.createcourse=async(req,res)=>{
 //response
 return res.status(200).json({
     success:true,
-    message:"course created successfully"
+    message:"course created successfully",
+    data:newcourse
 })
     }catch(err){
         return res.status(400).json({

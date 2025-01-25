@@ -70,7 +70,7 @@ router.post("/getCategoryPageDetails", categoryPageDetails)
 //-------------------------------------------------------------------------------------------------------------------
 
 router.post("/createRating", tokenverify, isStudent, createRating)
-router.get("/getAverageRating", getaveragerating)
+router.post("/getAverageRating", getaveragerating)
 router.get("/getReviews", getallratingsandreviews)
 
-module.exports = router 
+module.exports = router   
