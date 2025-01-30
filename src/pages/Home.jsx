@@ -6,6 +6,8 @@ import Codeblocks from "../component/core/homepage/codeblocks";
 import Footercontent from "../component/core/homepage/Footercontent"
 import Learninglanguage from "../component/core/homepage/Learninglanguage"
 import Timelinesection from "../component/core/homepage/Timelinesection"
+import Instructorsection from "../component/core/homepage/Instructorsection"
+import ExploreMore from "../component/core/homepage/ExploreMore";
 
 const Home=()=>{
     return(
@@ -102,6 +104,11 @@ const Home=()=>{
                 />
             </div>
             </div>
+            <div >
+                <ExploreMore></ExploreMore>
+            </div>
+            
+
         </div>    
 
         
@@ -144,7 +151,12 @@ const Home=()=>{
 
             {/* section 3 */}
             
-            
+            <div className="w-11/12 mx-auto flex flex-col bg-richblack-900">
+                <Instructorsection></Instructorsection>
+                <div>
+
+                </div>
+            </div>
             
             {/* section 4 */}
         <div className="bg-richblack-700">
