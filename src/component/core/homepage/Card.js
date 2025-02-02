@@ -14,7 +14,7 @@ const Card = ({ heading, description, level, lessionnumber }) => {
             {/* Push this div to the bottom */}
             <div className="flex flex-row justify-between text-white mt-auto">
                 <p>{level}</p>
-                <p>{lessionnumber}</p>
+                <p>{lessionnumber} Lessons</p>
             </div>
         </div>
     );

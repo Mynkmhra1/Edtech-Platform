@@ -11,10 +11,10 @@ import ExploreMore from "../component/core/homepage/ExploreMore";
 
 const Home=()=>{
     return(
-        <div className="overflow-x-hidden">
+        <div className="overflow-x-hidden ">
         <div >
             {/* sectionn 1 */}
-            <div className="realtive overflow-x-hidden max-w-maxContent mx-auto mt-[50px] flex flex-col w-11/12 items-center text-white justify-between">
+            <div className="realtive overflow-x-hidden max-w-maxContent mx-auto mt-[100px] flex flex-col w-11/12 items-center text-white justify-between">
             <Link to="/signup">
                 <div className="m-2 p-2 mx-auto rounded-full bg-richblack-800" >
                     <div className="flex items-center">
@@ -104,35 +104,31 @@ const Home=()=>{
                 />
             </div>
             </div>
-            <div >
-                <ExploreMore></ExploreMore>
+            <div className="relative">
+    <div className="relative z-10">
+        <ExploreMore />
+    </div>
+
+    <div className="relative -mt-32 z-0 bg-white">
+        <div className="bg-[url('./assets/Images/bghome.svg')] flex flex-row items-center justify-center h-[333px] w-full">
+            <CTAbutton active={true} tolink={"/signup"}>
+                <div className="flex items-center">
+                    Explore Full Catalog
+                    <span className="flex ml-2">
+                        <FaArrowRight />
+                    </span>
+                </div>
+            </CTAbutton>
+
+            <div className="flex text-white">
+                <CTAbutton active={false} tolink={"/login"}>
+                    Learn More
+                </CTAbutton>
             </div>
-            
-
-        </div>    
-
-        
-            
-            {/* section 2 */}
-                <div className="bg-white">
-                    <div className="bg-[url('./assets/Images/bghome.svg')] flex flex-row items-center justify-center h-[333px] w-full"> 
-                       
-                    <CTAbutton active={true} tolink={"/signup"}>
-                        <div className="flex items-center">
-                            Eplore full Catalog
-                            <span className="flex ml-2">
-                                <FaArrowRight />
-                            </span>
-                        </div>
-                    </CTAbutton>
-                       
-                        <div className="flex text-white">
-                            <CTAbutton active={false} tolink={"/login"}>
-                                Learn More
-                            </CTAbutton>
-                        </div>
-                    </div>
-                    <div className="w-11/12 mx-auto max-w-maxContent flex flex-col items-center justify-between gap-7">
+        </div>
+    
+                <div className="flex flex-col justify-between items-center">
+                    <div className="w-11/12 mx-auto max-w-maxContent flex flex-col items-center  gap-7">
                         <div className="flex flex-row gap-5 mb-10 mt-[90px]">
                             <h1 className="text-4xl font-semibold">Get the skills you need for a <span className="text-blue-600">Job that is in demand</span></h1>
                             <div className="flex flex-col items-start">
@@ -144,10 +140,12 @@ const Home=()=>{
                     <Timelinesection>
 
                     </Timelinesection>
+                    </div>
                     <Learninglanguage></Learninglanguage>
                 </div>
 
-           
+                </div>
+                </div>                 
 
             {/* section 3 */}
             

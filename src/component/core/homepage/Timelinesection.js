@@ -31,7 +31,7 @@ function Timelinesection() {
     return (
         <div className="flex w-11/12 flex-row  justify-center">
             {/* left section */}
-            <div className="flex flex-col mr-3">
+            <div className="flex  flex-col mr-3">
                 {logo.map((item, index) => (
                     <Tag
                     key={index}
