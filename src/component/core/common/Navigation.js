@@ -4,6 +4,10 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { ImCart } from "react-icons/im";
 import Logo from "../../../assets/Logo/Logo-Full-Light.png";
 import { logout } from "../../../reducer/Slices/authSlice"; // Import logout action
+import { useEffect, useState } from "react";
+import { apiConnector } from "../../../services/apiconnector";
+import {categories} from "../../../services/Apis"
+import {logoutProfile} from "../../../reducer/Slices/profileslice"
 
 function Navigation() {
   const dispatch = useDispatch();
@@ -12,11 +16,32 @@ function Navigation() {
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.profile.user);
   const totalItems = useSelector((state) => state.cart.totalItems);
+  
+  //sublinks
+  const[subLinks, setSubLinks]=useState([])
 
+  const fetchsublinks =async ()=>{
+    try{
+      const result = await apiConnector("GET",categories.CATEGORIES_API)
+      console.log(result.data.data.allCategory);
+      
+      setSubLinks(result.data.data.allCategory)
+    }
+    catch(err){
+      console.log("could not fetch categories details",err);
+    }
+  }
+
+  useEffect(()=>{
+    fetchsublinks()
+    console.log("re render while token changed",token);
+      
+  },[],[token])
 
   // Logout Handler
   const handleLogout = () => {
     dispatch(logout());  // Clears the token in Redux
+    dispatch(logoutProfile())
     navigate("/")
     };
 
@@ -35,9 +60,24 @@ function Navigation() {
         {/* Center Links */}
         <div className="flex-1 flex justify-center space-x-4 text-lg sm:text-xl flex-wrap">
           <Link to="/">Home</Link>
-          <Link to="/" className="flex flex-row items-center">
-            Catalog <RiArrowDropDownLine />
-          </Link>
+          <div className="relative group">
+            <Link to="/" className="flex flex-row items-center">
+              Catalog <RiArrowDropDownLine />
+            </Link>
+
+            {/* Dropdown - Appears on Hover */}
+            <div className="absolute -left-24 mt-2 w-60 bg-white  shadow-lg rounded-lg p-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 group-hover:block transition-all duration-300">
+              <div className="text-black">
+              {subLinks.map((link) => (
+                  <div key={link.id}>{link.Name}</div>
+              ))}
+
+              </div>
+            
+            <div className="absolute top-0 left-44 -translate-x-1 -translate-y-2 lg:w-4 lg:h-4 rotate-45 bg-white"> </div>
+          </div>
+          </div>
+
           <Link to="/about">About</Link>
           <Link to="/contact">Support</Link>
         </div>
@@ -61,7 +101,7 @@ function Navigation() {
 
           <div className="flex flex-row items-center justify-center space-x-4">
             {/* Cart Button with Absolute Count */}
-            { user && user?.accountType=="Student"&&
+            { user && user?.accountType==="Student"&&
             <div className="relative">
               <Link to="/dashboard/cart">
                 <button className="relative px-4 py-2 bg-purple-500 rounded-lg hover:bg-purple-600 text-sm sm:text-base">
@@ -91,7 +131,15 @@ function Navigation() {
             </button>
           
             {/* Show User Name */}
-            <p className="text-gray-300 text-sm sm:text-base">{user?.name || "User"}</p>
+            {user?.image ? (
+                <img
+                  src={user.image}  // Use the image URL from the user object
+                  alt="User Profile"
+                  className="w-10 h-10 rounded-full border border-white object-cover"
+                />
+              ) : (
+                <span className="text-gray-300 text-sm sm:text-base">User</span>
+              )}
           </div>
           
           )}

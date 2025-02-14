@@ -8,7 +8,7 @@ function Learninglanguage() {
         <div className="p-10">
             <div className=" flex flex-col items-center justify-center">
                 <div className="text-4xl font-bold">
-                    <p>Your swiss knife for <span className="text-blue-300">learning any language</span></p>
+                    <p>Your swiss knife for <span className="text-blue-100">learning any language</span></p>
                 </div>
                 <div className="text-center w-[40%] mb-8 mx-auto">
                     <p>Using spin making learning multiple languages easy. with 20+ languages realistic voice-over, progress tracking, custom schedule and more.</p>

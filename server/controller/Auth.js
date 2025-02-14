@@ -183,11 +183,14 @@ exports.login=async(req,res)=>{
         }).status(200).json({
             success: true,
             message: "Login successful and cookie generated",
+            token:token,
             data: {
                 user: {
+                    name:`${user.Firstname} ${user.Lastname}`,
                     email: user.email,
                     id: user._id,
                     accountType: user.accountType,
+                    image: user.image,
                 },
             },
         });

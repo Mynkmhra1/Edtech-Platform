@@ -23,7 +23,7 @@ const ExploreMore =()=>{
     return (
     <div className="flex flex-col items-center justify-center">
         <div className="text-4xl font-bold text-white">
-            <p>Unlock the <span className="text-blue-500">Power of Code</span></p>
+            <p>Unlock the <span className="text-blue-100">Power of Code</span></p>
         </div>
         <p className="text-richblack-200">Learn to Build Anything You Can Imagine</p>
 

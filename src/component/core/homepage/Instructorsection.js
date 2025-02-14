@@ -9,7 +9,7 @@ const Instructorsection=()=>{
             </div>  
             <div className="flex flex-col items-start m-40 w-[50%]">
                 <div className="text-4xl text-white font-bold w-50%">
-                    <p>Become an <span className="text-blue-500">Instructor</span></p>
+                    <p>Become an <span className="text-blue-100">Instructor</span></p>
                 </div>
                 <div className="text-pure-greys-400 text-center w-[50%]">
                     <p>Instructors from around the world teach millions of students on StudyNotion. We provide the tools and skills to teach what you love.</p>

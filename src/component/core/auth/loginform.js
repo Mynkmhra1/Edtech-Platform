@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
-function LoginForm({ setIsLoggedIn }) {
+import { useDispatch } from "react-redux";
+import {login} from "../../../services/operations/authapi"
+function LoginForm( ) {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
 
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  
 
   const setInput = (event) => {
     const { name, value } = event.target;
@@ -24,13 +29,7 @@ function LoginForm({ setIsLoggedIn }) {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (loginData.email && loginData.password) {
-      navigate("/dashboard");
-      setIsLoggedIn(true);
-      alert("Login successful!");
-    } else {
-      alert("Please fill in all fields.");
-    }
+    dispatch(login(loginData.email,loginData.password,navigate))
   };
 
   return (

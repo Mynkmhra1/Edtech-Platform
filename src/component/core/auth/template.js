@@ -24,9 +24,9 @@ function Template(props) {
           {/* Form Section */}
           <div>
             {props.formType === "signup" ? (
-              <Signupform setIsLoggedIn={setIsLoggedIn} />
+              <Signupform />
             ) : (
-              <Loginform setIsLoggedIn={setIsLoggedIn} />
+              <Loginform />
             )}
           </div>
 

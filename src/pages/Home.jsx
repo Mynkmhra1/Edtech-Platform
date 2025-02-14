@@ -27,7 +27,7 @@ const Home=()=>{
             </Link>
 
             <div className="text-center text-4xl font-bold mt-4">
-                <h2>Empower Your Future with <span className="text-blue-600 ">Coding Skills</span></h2>
+                <h2>Empower Your Future with <span className="text-blue-100 ">Coding Skills</span></h2>
             </div>
 
             <div className="w-[90%] text-lg text-center mt-2">
@@ -55,7 +55,7 @@ const Home=()=>{
             <div>
                 <Codeblocks position={"lg:flex-row"} 
                 heading={<div className= "font-bold">
-                    Unlock your <span className= "text-blue-600">coding potential </span> with our online courses.
+                    Unlock your <span className= "text-blue-100">coding potential </span> with our online courses.
                 </div>}
                 subheading={<div>
                     Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you.
@@ -81,7 +81,7 @@ const Home=()=>{
             <div>
                 <Codeblocks position={"lg:flex-row-reverse"} 
                 heading={<div className= "font-bold">
-                    Start <span className= " text-blue-600">coding in seconds </span> .
+                    Start <span className= " text-blue-100">coding in seconds </span> .
                 </div>}
                 subheading={<div>
                         Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson.   
@@ -130,7 +130,7 @@ const Home=()=>{
                 <div className="flex flex-col justify-between items-center">
                     <div className="w-11/12 mx-auto max-w-maxContent flex flex-col items-center  gap-7">
                         <div className="flex flex-row gap-5 mb-10 mt-[90px]">
-                            <h1 className="text-4xl font-semibold">Get the skills you need for a <span className="text-blue-600">Job that is in demand</span></h1>
+                            <h1 className="text-4xl font-semibold">Get the skills you need for a <span className="text-blue-100">Job that is in demand</span></h1>
                             <div className="flex flex-col items-start">
                                 <p>The modern StudyNotion is the dictates its own terms. Today, to be a competitive specialist requires more than professional skills.</p>
                                 <CTAbutton active={true} tolink={"/signup"} className="flex">Learn More</CTAbutton>

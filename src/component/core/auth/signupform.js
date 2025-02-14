@@ -1,67 +1,38 @@
 import { useState } from "react";
+import { sendotp } from "../../../services/operations/authapi";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormData } from "../../../reducer/Slices/authSlice"; // Import action
 
-function SignupForm({ setIsLoggedIn }) {
-  const [data, setData] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+function SignupForm() {
+  const dispatch = useDispatch();
+  const [showPassword,setShowPassword]=useState(true)
+  const [showConfirmPassword,setShowConfirmPassword]=useState(true)
+  const formData = useSelector((state) => state.auth.formData); // Get stored form data from Redux
 
   const navigate = useNavigate();
 
   const setInput = (event) => {
     const { name, value } = event.target;
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword((prev) => !prev);
+    dispatch(setFormData({ [name]: value })); // Dispatch form data update
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-
-    if (data.password !== data.confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-
-    alert("Signup successful!");
-    setIsLoggedIn(true);
-    navigate("/dashboard");
-
-    setData({
-      firstname: "",
-      lastname: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+    console.log("Signup Data:", formData);
+    dispatch(sendotp(formData.email, navigate)); // Use Redux state instead of local state
   };
 
   return (
     <div className="flex justify-center items-center bg-richblack-700 text-white">
       <form
         onSubmit={submitHandler}
-        className="w-full  p-6 bg-richblack-900 rounded-lg shadow-md"
+        className="w-full p-6 bg-richblack-900 rounded-lg shadow-md"
       >
         <h2 className="text-2xl font-bold text-center mb-6">Signup</h2>
 
-        {/* Two Inputs in One Line */}
+        {/* First Name & Last Name */}
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-gray-300 mb-1">First Name</label>
@@ -70,7 +41,7 @@ function SignupForm({ setIsLoggedIn }) {
               type="text"
               name="firstname"
               placeholder="First Name"
-              value={data.firstname}
+              value={formData.firstname || ""}
               required
               className="w-full px-4 py-2 bg-pure-greys-500 text-white border border-pure-greys-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -82,25 +53,59 @@ function SignupForm({ setIsLoggedIn }) {
               type="text"
               name="lastname"
               placeholder="Last Name"
-              value={data.lastname}
+              value={formData.lastname || ""}
               required
               className="w-full px-4 py-2 bg-pure-greys-500 text-white border border-pure-greys-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
 
+        {/* Email */}
         <label className="block text-gray-300 mb-1">Email</label>
         <input
           onChange={setInput}
           type="email"
           name="email"
           placeholder="Enter Email"
-          value={data.email}
+          value={formData.email || ""}
           required
           className="w-full mb-4 px-4 py-2 bg-pure-greys-500 text-white border border-pure-greys-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        {/* Password and Confirm Password Fields Side-by-Side */}
+        {/* Role Selection */}
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2">Select Role</label>
+
+          <div className="relative w-full max-w-xs mx-auto bg-pure-greys-500 rounded-full p-1 flex items-center justify-between">
+            {["Student", "Instructor", "Admin"].map((role) => (
+              <button
+                key={role}
+                onClick={() => dispatch(setFormData({ role }))}
+                className={`relative flex-1 text-center py-2 px-4 rounded-full transition-all duration-300 ${
+                  formData.role === role ? "text-black" : "text-pure-greys-25"
+                }`}
+              >
+                {role}
+              </button>
+            ))}
+
+            {/* Sliding effect */}
+            <div
+              className="absolute top-0 bottom-0 bg-pure-greys-600 rounded-full transition-all duration-300"
+              style={{
+                width: "33%",
+                left:
+                  formData.role === "Student"
+                    ? "0%"
+                    : formData.role === "Instructor"
+                    ? "33%"
+                    : "66%",
+              }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Password & Confirm Password */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div>
             <label className="block text-gray-300 mb-1">Password</label>
@@ -110,12 +115,12 @@ function SignupForm({ setIsLoggedIn }) {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter Password"
-                value={data.password}
+                value={formData.password || ""}
                 required
                 className="w-full px-4 py-2 bg-pure-greys-500 text-white border border-pure-greys-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <span
-                onClick={togglePasswordVisibility}
+                onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -131,12 +136,12 @@ function SignupForm({ setIsLoggedIn }) {
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Password"
-                value={data.confirmPassword}
+                value={formData.confirmPassword || ""}
                 required
                 className="w-full px-4 py-2 bg-pure-greys-500 text-white border border-pure-greys-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <span
-                onClick={toggleConfirmPasswordVisibility}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -145,6 +150,8 @@ function SignupForm({ setIsLoggedIn }) {
           </div>
         </div>
 
+
+        {/* Signup Button */}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

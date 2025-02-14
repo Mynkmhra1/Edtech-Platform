@@ -12,8 +12,13 @@ const profileSlice = createSlice({
     setUser(state, action) {
       state.user = action.payload;
     },
+
+    logoutProfile: (state) => {
+      state.user = null;
+      localStorage.removeItem("user"); // Remove user from storage
+    },
   },
 });
 
-export const { setUser } = profileSlice.actions;
+export const { setUser, logoutProfile } = profileSlice.actions;
 export default profileSlice.reducer;
