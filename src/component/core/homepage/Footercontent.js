@@ -8,9 +8,9 @@ const FooterContent = () => {
             <div className="w-full lg:w-[50%] flex flex-wrap justify-start pl-[50px] mb-4 gap-6">
             {/* Company */}
             <div className="flex-1 min-w-[150px]">
-                <div className="mb-2">
+                {/* <div className="mb-2">
                 <img src={`${image}`}></img>
-                </div>
+                </div> */}
                 <h3 className="font-bold text-lg mb-4">Company</h3>
                 <ul className="space-y-2 text-sm">
                 <li><Link to="/about" className="hover:text-yellow-500">About Us</Link></li>

@@ -8,10 +8,10 @@ function Learninglanguage() {
         <div className="p-10">
             <div className=" flex flex-col items-center justify-center">
                 <div className="text-4xl font-bold">
-                    <p>Your swiss knife for <span className="text-blue-100">learning any language</span></p>
+                    <p>Your swiss knife to <span className="text-blue-100">"Break the ice"</span></p>
                 </div>
                 <div className="text-center w-[40%] mb-8 mx-auto">
-                    <p>Using spin making learning multiple languages easy. with 20+ languages realistic voice-over, progress tracking, custom schedule and more.</p>
+                    <p>With Spin on Campus Connect, mastering multiple languages is easier than ever! Access 20+ languages with realistic voice-overs, track your progress, and set a custom learning schedule. Stay engaged with interactive lessons and seamless campus integration to enhance your learning experience</p>
                 </div>
 
                 {/* image */}

@@ -1,9 +1,9 @@
 import toast from "react-hot-toast"
-import { setLoading } from "../../reducer/Slices/authSlice"
+import { logout, setLoading } from "../../reducer/Slices/authSlice"
 import { apiConnector } from "../apiconnector"
 import { endPoints } from "../Apis"
 import { setToken } from "../../reducer/Slices/authSlice"
-import {setUser} from "../../reducer/Slices/profileslice"
+import {logoutProfile, setUser} from "../../reducer/Slices/profileslice"
 
 
 
@@ -163,3 +163,12 @@ export const resetpassword=(newpassword,confirmpassword,token,setConfirmPassword
       }
       dispatch(setLoading(false))
 }}
+
+export const logOut=(navigate)=>{
+  return async(dispatch)=>{
+    dispatch(logout())
+    dispatch(logoutProfile())
+    navigate("/")
+  }
+
+}

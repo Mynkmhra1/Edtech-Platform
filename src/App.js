@@ -9,6 +9,7 @@ import ForgotPassword from "./pages/forgotpassword";
 import UpdatePassword from "./pages/UpdatePassword"
 import VerifyMail from "./pages/Verifymail";
 import { Aboutus } from "./pages/Aboutus";
+import { Dashboard } from "./pages/Dashboard";
 
 function App() {
   
@@ -25,7 +26,7 @@ function App() {
       <Route path="/update-Password/:token" element={<UpdatePassword />} />
       <Route path="/verify-email" element={ <VerifyMail/>} />
       <Route path="/about" element={ <Aboutus/>} />
-
+      {/* <Route path="/dashboard/my-profile" element={<Myprofile/>} /> */}
 
     </Routes>
     </div>

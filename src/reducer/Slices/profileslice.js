@@ -1,21 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: null, // initial state with no user data
+  user: JSON.parse(localStorage.getItem("user")) || null,loading: false // Load stored user
 };
 
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    // Set the user (for example, on login)
     setUser(state, action) {
       state.user = action.payload;
+      localStorage.setItem("user", JSON.stringify(action.payload)); // Store user persistently
     },
-
-    logoutProfile: (state) => {
+    logoutProfile(state) {
       state.user = null;
       localStorage.removeItem("user"); // Remove user from storage
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
     },
   },
 });

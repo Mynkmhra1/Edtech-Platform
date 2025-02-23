@@ -53,8 +53,8 @@ function Timelinesection() {
                             <p className="text-lg text-white">Years of Excellence</p>
                         </div>
                         <div className="flex flex-row items-center pl-3 justify-between ">
-                            <p className="text-4xl pr-2 text-white">250</p>
-                            <p className="text-lg text-white">Types of courses</p>
+                            <p className="text-4xl pr-2 text-white">2500+</p>
+                            <p className="text-lg text-white">Student Engagement </p>
                         </div>
                     </div>
             </div>

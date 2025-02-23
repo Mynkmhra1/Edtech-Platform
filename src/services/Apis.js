@@ -6,6 +6,7 @@ export const categories={
 }
 
 export const endPoints={
+    CONTACT_API:BASE_URL+"/contact/sendinfo",
     VERIFY_API:BASE_URL+"/auth/signup",
     SENDOTP_API:BASE_URL+"/auth/sendotp",
     LOGIN_API:BASE_URL+"/auth/login",

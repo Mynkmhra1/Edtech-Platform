@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { apiConnector } from "../../../services/apiconnector";
 import {categories} from "../../../services/Apis"
 import {logoutProfile} from "../../../reducer/Slices/profileslice"
+import { logOut } from "../../../services/operations/authapi";
 
 function Navigation() {
   const dispatch = useDispatch();
@@ -36,13 +37,12 @@ function Navigation() {
     fetchsublinks()
     console.log("re render while token changed",token);
       
-  },[],[token])
+  },[token])
 
   // Logout Handler
-  const handleLogout = () => {
-    dispatch(logout());  // Clears the token in Redux
-    dispatch(logoutProfile())
-    navigate("/")
+  const handleLogout = (event) => {
+    event.preventDefault();
+    dispatch(logOut(navigate))
     };
 
   return (
@@ -51,11 +51,11 @@ function Navigation() {
       <div className="max-w-[1000px] mx-auto flex flex-wrap items-center justify-between p-4 sm:px-8">
         
         {/* Logo */}
-        <div>
+        {/* <div>
           <Link to="/">
             <img src={Logo} alt="Logo" className="h-10" />
           </Link>
-        </div>
+        </div> */}
 
         {/* Center Links */}
         <div className="flex-1 flex justify-center space-x-4 text-lg sm:text-xl flex-wrap">

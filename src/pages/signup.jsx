@@ -8,7 +8,7 @@ function Signup({ setIsLoggedIn }) {
     <div className="flex justify-center items-center min-h-screen">
       {!loading ? (
         <Template
-          title="Join the millions learning to code with StudyNotion for free"
+          title="Lets buid a community to froster the learning that let us grow together"
           description1="Build skills for today, tomorrow, and beyond."
           description2="Education to future-proof your career."
           image={signupImg}
