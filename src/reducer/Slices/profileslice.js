@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null,loading: false // Load stored user
+  user: JSON.parse(localStorage.getItem("user") || "null") || null , // Load stored user
+  loading:false
 };
 
 const profileSlice = createSlice({

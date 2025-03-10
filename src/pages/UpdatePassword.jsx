@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { resetpassword } from "../services/operations/authapi";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import eye icons
 
 const UpdatePassword = () => {
   const { token } = useParams();
   console.log("token is",token);
+  const navigate=useNavigate();
   
   const dispatch = useDispatch();
   const [newpassword, setNewPassword] = useState("");
@@ -16,7 +17,7 @@ const UpdatePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(resetpassword(newpassword, confirmPassword, token, setConfirmPassword, setNewPassword));
+    dispatch(resetpassword(newpassword, confirmPassword, token, setConfirmPassword, setNewPassword,navigate));
   };
 
   return (

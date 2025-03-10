@@ -28,7 +28,8 @@ exports.updateProfile=async(req,res)=>{
         //response
         return res.status(200).json({
             success:true,
-            message:"successfully updated profile"
+            message:"successfully updated profile",
+            
         })
 
      }catch(err){
@@ -120,7 +121,7 @@ exports.updateDisplayPicture = async (req, res) => {
         { _id: userId },
         { image: image.secure_url },
         { new: true }
-      )
+      ).populate("additionalDetails");
       res.send({
         success: true,
         message: `Image Updated successfully`,
@@ -129,8 +130,8 @@ exports.updateDisplayPicture = async (req, res) => {
     } catch (error) {
       return res.status(500).json({
         success: false,
-        message: error.message,
-      })
+        message: ("error message is ",error.message)
+            })
     }
 };
 

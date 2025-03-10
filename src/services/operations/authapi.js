@@ -21,9 +21,11 @@ export const sendotp=(email,navigate)=>{
       toast.success("mail sent successfully")
       navigate("/verify-email")
 
-    }catch(err){
-      console.log("error while resettoken sent",err);
+    }catch(err) {
+      console.error("Error while sending OTP:", err.response ? err.response.data : err.message);
+      toast.error(err.response?.data?.message || "Failed to send OTP");
     }
+    
     dispatch(setLoading(false))
   }
 }
@@ -94,7 +96,7 @@ export const login = (email, password, navigate) => {
       toast.success("Logged in successfully!");
 
       // ✅ Redirect to Dashboard after successful login
-      navigate("/dashboard");  
+      navigate("/dashboard/my-profile");  
 
     } catch (err) {
       console.error("Login error:", err);
@@ -127,7 +129,7 @@ export const getResetToken=(email, setEmailSent)=>{
 }
 
 
-export const resetpassword=(newpassword,confirmpassword,token,setConfirmPassword,setNewPassword)=>{
+export const resetpassword=(newpassword,confirmpassword,token,setConfirmPassword,setNewPassword,navigate)=>{
 
     return async(dispatch)=>{
 
@@ -158,6 +160,7 @@ export const resetpassword=(newpassword,confirmpassword,token,setConfirmPassword
         toast.success("Password updated successfully!"); // Show success toast
         setNewPassword("");
         setConfirmPassword("");
+        navigate("/");
       } catch (error) {
         toast.error(error.message || "Something went wrong!"); // Show error toast
       }
@@ -171,4 +174,61 @@ export const logOut=(navigate)=>{
     navigate("/")
   }
 
+}
+
+
+
+
+export const updateProfile=(formData)=>{
+  return async(dispatch)=>{
+      dispatch(setLoading(true))
+      try{
+        console.log("image to be upload is ,", formData);
+        
+        console.log("BEFORE CALL TO BACKEND")
+          const response= await apiConnector("PUT",endPoints.UPDATEPIC_API,formData )
+         
+          console.log("response is ",response)
+
+          if(!response.data.success){
+              throw new Error (response.data.message);
+          }
+          toast.success("Image updated successfully")
+          dispatch(setUser({ ...response.data.data }));
+      }
+      catch(e){
+          console.log("error while UPDATION OF PICTURE",e);
+      }
+      dispatch(setLoading(false))
+  }
+}
+
+
+export const updateDetails=(dateOfBirth,contactNumber,about,gender)=>{
+  return async(dispatch)=>{
+    dispatch(setLoading(true));
+    try{
+      console.log(`data to be update is,dob=${dateOfBirth},number= ${contactNumber},about= ${about},gender= ${gender}`);
+      const response= await apiConnector("PUT",endPoints.PROFILEDETAILS_API,{dateOfBirth,contactNumber,about,gender})
+      console.log("the response is ",response);
+      if(!response.data.success){
+        throw new Error (response.data.message);
+      }
+      
+      const updatedUser = response.data?.data?.user;
+      if (updatedUser) {
+        dispatch(setUser(updatedUser));
+        toast.success("Profile updated successfully");
+      } else {
+        console.warn("User data missing after profile update.");
+      }
+    
+
+    toast.success("Profile updated successfully")
+}
+catch(e){
+    console.log("error while UPDATION OF Profile details",e);
+}
+    dispatch(setLoading(false));
+  }
 }

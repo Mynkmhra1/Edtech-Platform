@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 import { useDispatch } from "react-redux";
 import {login} from "../../../services/operations/authapi"
+import { Link } from "react-router-dom";
 function LoginForm( ) {
   const [loginData, setLoginData] = useState({
     email: "",
@@ -70,6 +71,15 @@ function LoginForm( ) {
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
+          {/* Forgot Password Section */}
+        <div className="flex justify-end mb-6">
+          <Link
+            to="/forgotpassword"
+            className="text-pure-greys-200 hover:underline text-sm"
+          >
+            Forgot Password?
+          </Link>
+        </div>
         </div>
 
         <button

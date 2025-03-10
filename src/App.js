@@ -10,6 +10,9 @@ import UpdatePassword from "./pages/UpdatePassword"
 import VerifyMail from "./pages/Verifymail";
 import { Aboutus } from "./pages/Aboutus";
 import { Dashboard } from "./pages/Dashboard";
+import { Myprofile } from "./component/core/Dashboard/Myprofile";
+import { Enrolledcourses } from "./component/core/Dashboard/Enrolledcourses";
+import { Setting } from "./component/core/Dashboard/setting";
 
 function App() {
   
@@ -26,7 +29,13 @@ function App() {
       <Route path="/update-Password/:token" element={<UpdatePassword />} />
       <Route path="/verify-email" element={ <VerifyMail/>} />
       <Route path="/about" element={ <Aboutus/>} />
-      {/* <Route path="/dashboard/my-profile" element={<Myprofile/>} /> */}
+      <Route
+      element={<Dashboard/>}
+      >
+              <Route path="/dashboard/my-profile" element={<Myprofile/>} />
+              <Route path="/dashboard/enrolled-courses" element={<Enrolledcourses/>} />  
+              <Route path="/dashboard/setting" element={<Setting/>} /> 
+      </Route>
 
     </Routes>
     </div>

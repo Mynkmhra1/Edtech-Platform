@@ -116,7 +116,7 @@ function Navigation() {
             </div>
 }
             {/* Dashboard Button */}
-            <Link to="/dashboard">
+            <Link to="/dashboard/my-profile">
               <button className="px-4 py-2 bg-purple-500 rounded-lg hover:bg-purple-600 text-sm sm:text-base">
                 Dashboard
               </button>

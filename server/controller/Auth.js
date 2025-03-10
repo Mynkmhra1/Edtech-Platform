@@ -160,7 +160,13 @@ exports.login=async(req,res)=>{
     }
     
     //fetch password from db
-    const user=await User.findOne({email}) 
+    const user=await User.findOne({email})
+    .populate("additionalDetails")
+    .exec();
+
+    console.log("user details are =>",user);
+    
+
     console.log(`USER details=> ${user}`)
     //compare the password
     if(await bcrypt.compare(password,user.password)){
@@ -191,6 +197,7 @@ exports.login=async(req,res)=>{
                     id: user._id,
                     accountType: user.accountType,
                     image: user.image,
+                    additionalDetails: user.additionalDetails,
                 },
             },
         });

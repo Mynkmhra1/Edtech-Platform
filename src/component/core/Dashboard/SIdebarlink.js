@@ -10,7 +10,7 @@ export const SidebarLink = ({ name, path, icon }) => {
     <NavLink
       to={path}
       className={`flex items-center gap-3 p-3 rounded-lg transition-all 
-        ${isActive ? "bg-gray-800 text-white" : "text-gray-400 hover:bg-gray-700 hover:text-white"}`}
+        ${isActive ? "bg-yellow-700 text-yellow-50" : "text-pure-greys-400 hover:bg-yellow-700  hover:text-yellow-100"}`}
     >
       {Icon && (
         <Icon className={`text-xl transition-all ${isActive ? "text-blue-400" : "text-gray-400"}`} />

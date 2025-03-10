@@ -13,15 +13,15 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-black">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg p-4">
+      <div className="w-64 bg-black shadow-lg p-4">
         <Sidebar />
       </div>
       
       {/* Main Content */}
       <div className="flex-1 p-6">
-        <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="bg-pure-greys-800 shadow-md rounded-lg p-6">
           <Outlet />
         </div>
       </div>
