@@ -162,6 +162,7 @@ exports.login=async(req,res)=>{
     //fetch password from db
     const user=await User.findOne({email})
     .populate("additionalDetails")
+    .populate("courses")
     .exec();
 
     console.log("user details are =>",user);
@@ -198,6 +199,7 @@ exports.login=async(req,res)=>{
                     accountType: user.accountType,
                     image: user.image,
                     additionalDetails: user.additionalDetails,
+                    courses:user.courses
                 },
             },
         });

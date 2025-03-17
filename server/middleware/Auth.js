@@ -4,7 +4,7 @@ require("dotenv").config()
 const tokenverify=async (req,res,next)=>{
     try{
         //fetch token
-        const token = req.cookies.token||req.body.token;
+        const token = req.cookies.token||req.body.token|| req.header("Authorization").replace("Bearer","");
         //verify token is missing or not
 
         if(!token){
@@ -15,7 +15,7 @@ const tokenverify=async (req,res,next)=>{
         }
         try{
         //verify the token
-        const decode= jwt.verify(token ,process.env.JWT_SECRET)
+        const decode= jwt.verify(token ,process.env.JWT_SECRET);
         req.user=decode;
         
         
@@ -37,8 +37,6 @@ const tokenverify=async (req,res,next)=>{
 
     }
 }
-
-
 
 const isStudent=async (req,res,next)=>{
     try{
