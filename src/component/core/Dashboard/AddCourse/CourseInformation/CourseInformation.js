@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { fetchCourseCategories } from "../../../../../services/operations/courseDetailsAPI";
-import { useSelector } from "react-redux";
+import { addCourseDetails, fetchCourseCategories } from "../../../../../services/operations/courseDetailsAPI";
+import { useDispatch,useSelector } from "react-redux";
+import {setCourse, setStep} from "../../../../../reducer/Slices/courseSlice"
+
 
 export const CourseInformation = () => {
   const {
@@ -12,12 +14,32 @@ export const CourseInformation = () => {
     formState: { errors },
   } = useForm();
 
+  const dispatch=useDispatch()
+  const step = useSelector((state) => state.course);
+
+useEffect(() => {
+  console.log("Step updated to:", step);
+}, [step]);
   const [tags, setTags] = useState([]);
   const [input, setInput] = useState("");
-
+  const {token}=useSelector((state)=>state.auth)
   const {course,editCourse}=useSelector((state)=>state.course)
   const [categories,setCategories]=useState([]);
   const [loading,setLoading]=useState(false);
+  const [preview, setPreview] = useState(course?.thumbnail||"");
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreview(imageUrl);
+
+      // If you want to store the file or its URL in course.thumbnail
+      dispatch(setCourse({ ...course, thumbnail: imageUrl }));
+    }
+  };
 
   useEffect(()=>{
      const getCategories=async()=>{
@@ -38,14 +60,44 @@ export const CourseInformation = () => {
       setValue("courseName", course.courseName);
       setValue("description", course.courseDescription);
       setValue("price", course.price);
-      setValue("category", course.Category);
-      setValue("tags",course.Tags)
-    }
-  }, [editCourse, course, setValue]);
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-  };
+      setValue("category", course.Categoryid);
+      setValue("tags",course.Tags);
+      setValue("thumbnail", course.thumbnail)
 
+    }
+    console.log("THE COURSE IS ,",course);
+    
+  }, [editCourse, course, setValue]);
+
+  const onSubmit = async (data) => {
+    console.log("Form Data:", data);
+  
+    const formData = new FormData();
+    formData.append("courseName", data.courseName);
+    formData.append("courseDescription", data.courseDescription);
+    formData.append("price", data.price);
+    formData.append("WhatYouWillLearn", data.courseBenefits);
+    formData.append("Categoryid", data.Categoryid); // Assuming this is a category ID
+    formData.append("tag",data.tag)
+  
+    // Handle file upload safely
+    if (data.thumbnail && data.thumbnail[0]) {
+      formData.append("thumbnailImage", data.thumbnail[0]); // ✅ real file
+    } else {
+      console.log("No thumbnail file selected");
+    }
+  
+    setLoading(true);
+    const result = await addCourseDetails(formData, token);
+    if (result) {
+      dispatch(setStep(2));
+     
+      
+      dispatch(setCourse(result.data));
+  
+    }
+    setLoading(false);
+  };
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault(); // Prevent form submission
@@ -86,7 +138,7 @@ export const CourseInformation = () => {
         <div>
           <label className="block text-sm font-medium">Description</label>
           <textarea
-            {...register("description", { required: "Description is required" })}
+            {...register("courseDescription", { required: "Description is required" })}
             className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
           />
           {errors.description && (
@@ -111,7 +163,7 @@ export const CourseInformation = () => {
         <div>
           <label className="block text-sm font-medium">Category</label>
           <select
-            {...register("category", { required: "Category is required" })}
+            {...register("Categoryid", { required: "Category is required" })}
             className="w-full p-2 rounded bg-gray-700 text-richblack-700 border border-gray-600"
             defaultValue={editCourse ? course?.category : ""}
           >
@@ -119,7 +171,7 @@ export const CourseInformation = () => {
             {loading ? (
               <option disabled>Loading categories...</option>
             ) : (
-              categories.map((cat,index) => (
+              categories?.map((cat,index) => (
                 <option key={index} value={cat._id}>
                   {cat?.Name}
                 </option>
@@ -155,13 +207,47 @@ export const CourseInformation = () => {
             </div>
         </div>
 
+      {/* thumbnail */}
+
+      <div className="flex flex-col items-start gap-2">
+        <img
+          src={preview}
+          alt="Course Thumbnail"
+          className="w-64 h-40 object-cover rounded-md border"
+        />
+      <input
+            type="file"
+            accept="image/*"
+            {...register("thumbnail", { required: "Thumbnail is required" })} // Register file input here
+            onChange={handleImageChange}
+          />
+    </div>
+
+    {/* Benifits of the course */}
+    <div>
+          <label className="block text-sm courseBenefits font-medium">BENIFITS OF COURSE</label>
+          <textarea id="courseBenefits" 
+            placeholder="enter the benefits"
+            {...register("WhatWillYouLearn", { required: "true" })}
+            className="w-full p-2 rounded bg-gray-700 text-black border border-gray-600"
+          />
+          {errors.courseBenefits && (
+            <p className="text-red-400 text-sm">{errors.courseBenefits.message}</p>
+          )}
+        </div>
+        
+
         {/* Submit Button */}
+        <div>
+
         <button
-          type="submit"
+          type="submit"  
           className="w-full p-2 bg-blue-600 hover:bg-blue-700 rounded text-white font-medium"
         >
           Submit Course
         </button>
+        </div>
+        
       </form>
     </div>
   );

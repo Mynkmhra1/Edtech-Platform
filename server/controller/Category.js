@@ -46,7 +46,7 @@ exports.showallCategory=async(req,res)=>{
             data:{allCategory}
         })
     }catch(err){
-        return res.status(200).json({
+        return res.status(400).json({
             success:false,
             message:"cant fetch all tags"
         })

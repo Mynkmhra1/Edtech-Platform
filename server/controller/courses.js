@@ -12,6 +12,8 @@ require("dotenv").config()
 exports.createcourse=async(req,res)=>{
     try{
         //data fetch
+        console.log("inside the course  creation backend");
+        
     let{courseName,courseDescription,WhatYouWillLearn,price,status,Categoryid,tags}=req.body;
     //file fetch
     console.log("instructor details ",req.user.id);
@@ -82,7 +84,7 @@ exports.createcourse=async(req,res)=>{
         $push:{courses:newcourse._id}
     },{new:true})
     console.log("course added to user");
-
+ 
     //update Category schema
     await Category.findByIdAndUpdate({_id:Categorydetails._id},
         {
@@ -95,13 +97,12 @@ return res.status(200).json({
     message:"course created successfully",
     data:newcourse
 })
-    }catch(err){
-        return res.status(400).json({
-            success:false,
-            message:"course creation failed",
-            error:err.message
-        })      
-    }
+    }catch(err){console.error("Error in createCourse:", err);
+    return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+        error: err.message
+    });}
 
     
 }

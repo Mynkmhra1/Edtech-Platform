@@ -30,6 +30,10 @@ const userSchema= new mongoose.Schema({
         required:true,
         ref:"Profile"
     },
+    groups:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Group"
+    }],
     courses:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Courses"

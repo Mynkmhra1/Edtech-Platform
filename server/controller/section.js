@@ -14,7 +14,7 @@ exports.createsection= async(req,res)=>{
                 success:false,
                 message:"enter all fields"
             })
-        }
+        } 
         console.log("validation complete")
         //create section
         const sectiondata= await Section.create({sectionName})

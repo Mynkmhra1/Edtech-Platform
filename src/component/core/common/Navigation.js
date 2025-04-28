@@ -35,7 +35,7 @@ function Navigation() {
 
   useEffect(()=>{
     fetchsublinks()
-    console.log("re render while token changed",token);
+    console.log("re render while token changed",token); 
       
   },[token])
 
